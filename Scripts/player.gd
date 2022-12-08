@@ -1,21 +1,19 @@
 extends RigidBody2D
 
-enum PlayerType { Player1, Player2, CPU }
+enum PlayerType { PLAYER_1, PLAYER_2, CPU }
 
-export(PlayerType) var player_type = PlayerType.Player1
+export(PlayerType) var player_type = PlayerType.PLAYER_1
 export var speed = 200
 
 var player_code = ""
+var velocity = linear_velocity
 
 
 func _ready():
-	if player_type == PlayerType.Player1:
+	if player_type == PlayerType.PLAYER_1:
 		player_code = "p1"
-	elif player_type == PlayerType.Player2:
+	elif player_type == PlayerType.PLAYER_2:
 		player_code = "p2"
-
-
-var velocity = linear_velocity
 
 
 func _integrate_forces(state):
