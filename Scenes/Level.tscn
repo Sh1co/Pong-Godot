@@ -1,0 +1,63 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/LevelHUD.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Goal.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scripts/level.gd" type="Script" id=4]
+[ext_resource path="res://Scenes/Ball.tscn" type="PackedScene" id=5]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 512, 5 )
+
+[node name="Level" type="Node2D"]
+script = ExtResource( 4 )
+ball_ps = ExtResource( 5 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchor_bottom = 0.643
+margin_right = 1024.0
+margin_bottom = 601.0
+color = Color( 0, 0, 0, 1 )
+
+[node name="Player1" parent="." instance=ExtResource( 1 )]
+position = Vector2( 70, 250 )
+
+[node name="Player2" parent="." instance=ExtResource( 1 )]
+position = Vector2( 930, 250 )
+player_type = 1
+
+[node name="Ceiling" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ceiling"]
+position = Vector2( 512, -5 )
+shape = SubResource( 1 )
+
+[node name="Floor" type="StaticBody2D" parent="."]
+position = Vector2( 0, 611 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2( 512, -5 )
+shape = SubResource( 1 )
+
+[node name="Goal1" parent="." instance=ExtResource( 3 )]
+position = Vector2( -20, 0 )
+
+[node name="Goal2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 1024, 0 )
+goal_number = 2
+
+[node name="BallSpawnPosition" type="Position2D" parent="."]
+position = Vector2( 512, 300 )
+
+[node name="HUD" parent="." instance=ExtResource( 2 )]
+
+[node name="BallSpawnDelay" type="Timer" parent="."]
+wait_time = 1.25
+one_shot = true
+
+[node name="GameEndDelay" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[connection signal="timeout" from="BallSpawnDelay" to="." method="_spawn_ball"]
+[connection signal="timeout" from="GameEndDelay" to="." method="end_game"]
